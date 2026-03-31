@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BRANDUP4ME</title>
+
+<style>
+/* RESET */
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  background:#0A0A0F;
+  color:#fff;
+  font-family:sans-serif;
+  overflow-x:hidden;
+  opacity:0;
+  transition:opacity .6s ease;
+}
+body.loaded{opacity:1}
+
+/* NAV */
+nav{
+  position:fixed;top:0;left:0;right:0;
+  padding:20px;
+  display:flex;justify-content:space-between;
+  z-index:1000;
+}
+nav.sc{
+  background:rgba(10,10,15,0.6);
+  backdrop-filter:blur(25px);
+}
+
+/* BUTTON */
+.bf,.bg{
+  padding:10px 20px;
+  border-radius:6px;
+  text-decoration:none;
+}
+.bf{background:#C8FF00;color:black}
+.bg{border:1px solid #333;color:white}
+
+/* SIDE MENU */
+.side-menu{
+  position:fixed;
+  top:0;left:-100%;
+  width:280px;height:100vh;
+  background:rgba(15,15,20,0.7);
+  backdrop-filter:blur(20px);
+  padding:80px 20px;
+  display:flex;
+  flex-direction:column;
+  gap:20px;
+  transition:.4s;
+  z-index:2000;
+  transform:translateX(-40px) scale(.95);
+  opacity:0;
+}
+.side-menu.active{
+  left:0;
+  transform:translateX(0) scale(1);
+  opacity:1;
+}
+.side-menu a{
+  color:white;
+  text-decoration:none;
+  font-size:1.5rem;
+}
+.side-menu .cta{
+  background:#C8FF00;
+  color:black;
+  padding:10px;
+  text-align:center;
+}
+
+/* OVERLAY */
+.overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.5);
+  display:none;
+}
+.overlay.show{display:block}
+
+/* MENU BTN */
+.menu-btn{
+  position:fixed;
+  top:20px;
+  left:20px;
+  font-size:1.5rem;
+  background:none;
+  border:none;
+  color:white;
+  z-index:2100;
+}
+
+/* HERO */
+.hero{
+  height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+}
+.hbtns{margin-top:20px}
+
+/* RIPPLE */
+.ripple{position:relative;overflow:hidden}
+.ripple span{
+  position:absolute;
+  border-radius:50%;
+  transform:scale(0);
+  animation:ripple .6s linear;
+  background:rgba(255,255,255,0.4);
+}
+@keyframes ripple{
+  to{transform:scale(4);opacity:0}
+}
+</style>
+</head>
+
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <h2>BRANDUP4ME</h2>
+</nav>
+
+<!-- SIDE MENU -->
+<nav class="side-menu" id="sideMenu">
+  <a href="#services">Services</a>
+  <a href="#packages">Packages</a>
+  <a href="#about">About</a>
+  <a href="#contact" class="cta">Let’s Talk →</a>
+</nav>
+
+<div class="overlay" id="overlay"></div>
+<button class="menu-btn" id="menuBtn">☰</button>
+
+<!-- HERO -->
+<section class="hero">
+  <div>
+    <h1>YOUR BRAND.<br>LOUDER. BOLDER.</h1>
+    <p>We help businesses grow 🚀</p>
+    <div class="hbtns">
+      <a href="#" class="bf">Start Now</a>
+      <a href="#" class="bg">View Work</a>
+    </div>
+  </div>
+</section>
+
+<script>
+/* LOAD */
+window.addEventListener("load",()=>{
+  document.body.classList.add("loaded");
+});
+
+/* NAV SCROLL */
+const nav=document.getElementById("nav");
+window.addEventListener("scroll",()=>{
+  nav.classList.toggle("sc",scrollY>50);
+});
+
+/* MENU */
+const menuBtn=document.getElementById("menuBtn");
+const sideMenu=document.getElementById("sideMenu");
+const overlay=document.getElementById("overlay");
+
+menuBtn.onclick=()=>{
+  sideMenu.classList.toggle("active");
+  overlay.classList.toggle("show");
+};
+
+overlay.onclick=()=>{
+  sideMenu.classList.remove("active");
+  overlay.classList.remove("show");
+};
+
+/* RIPPLE */
+document.querySelectorAll('.bf,.bg').forEach(btn=>{
+  btn.classList.add("ripple");
+
+  btn.addEventListener("click",function(e){
+    const circle=document.createElement("span");
+    const rect=btn.getBoundingClientRect();
+
+    circle.style.left=`${e.clientX-rect.left}px`;
+    circle.style.top=`${e.clientY-rect.top}px`;
+
+    this.appendChild(circle);
+
+    setTimeout(()=>circle.remove(),600);
+  });
+});
+</script>
+
+</body>
+</html>
